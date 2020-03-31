@@ -18,4 +18,31 @@ app.post('/api/world', (req, res) => {
   );
 });
 
+app.get('/api/events', (req, res) => {
+  res.send(
+    [
+      {
+        EventID: 0,
+        Title: 'CPSC 304 Final Exam',
+        StartDate: new Date(2020, 1, 2, 10, 0, 0, 0),
+        EndDate: new Date(2020, 1, 2, 12, 0, 0, 0),
+        Description: 'In person final exam. All students must attend',
+        LocationAddress: '6245 Agronomy Rd, Vancouver, BC V6T 1Z4',
+        OrganizerUserID: 0,
+        OrganizerName: 'Bob Smith'
+      },
+      {
+        EventID: 1,
+        Title: 'CPSC 304 Review Session',
+        StartDate: new Date(2020, 1, 1, 10, 0, 0, 0),
+        EndDate: new Date(2020, 1, 1, 12, 0, 0, 0),
+        Description: 'Optional review session',
+        LocationAddress: '6245 Agronomy Rd, Vancouver, BC V6T 1Z4',
+        OrganizerUserID: 1,
+        OrganizerName: 'Jacky Ding'
+      }
+    ]
+  )
+})
+
 app.listen(port, () => console.log(`Listening on port ${port}`));
