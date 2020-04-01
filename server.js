@@ -18,7 +18,8 @@ app.post('/api/world', (req, res) => {
   );
 });
 
-app.get('/api/events', (req, res) => {
+app.post('/api/events', (req, res) => {
+  console.log(req.body);
   res.send(
     [
       {
@@ -29,7 +30,9 @@ app.get('/api/events', (req, res) => {
         Description: 'In person final exam. All students must attend',
         LocationAddress: '6245 Agronomy Rd, Vancouver, BC V6T 1Z4',
         OrganizerUserID: 0,
-        OrganizerName: 'Bob Smith'
+        OrganizerName: 'Bob Smith',
+        Attendees: ["Jack Ding", "Bob Smith", "Alex Doe"],
+        Types: ["study"]
       },
       {
         EventID: 1,
@@ -39,10 +42,17 @@ app.get('/api/events', (req, res) => {
         Description: 'Optional review session',
         LocationAddress: '6245 Agronomy Rd, Vancouver, BC V6T 1Z4',
         OrganizerUserID: 1,
-        OrganizerName: 'Jacky Ding'
+        OrganizerName: 'Jacky Ding',
+        Attendees: ["Jack Ding", "Bob Smith", "Alex Doe", "Chris Burton"],
+        Types: ["study", "group event"]
       }
     ]
   )
+})
+
+app.post('/api/event', (req, res) => {
+  console.log(req.body);
+  res.send();
 })
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
