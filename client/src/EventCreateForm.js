@@ -2,7 +2,6 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import MultiSelectTypeGroup from './MultiSelectTypeGroup';
-import Input from '@material-ui/core/Input';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,19 +22,6 @@ export default function EventCreateForm(props) {
 
   return (
     <form className={classes.root} noValidate autoComplete="off">
-        <div>
-            Organizer User ID:&nbsp;&nbsp;
-            <Input 
-                defaultValue={props.organizerIDValue}
-                onChange={e => handleChange(e, props.onOrganizerIDChange)}
-                inputProps={{
-                    step: 10,
-                    min: 0,
-                    max: 100,
-                    type: 'number',
-                    'aria-labelledby': 'input-slider',
-                }} />
-        </div>
         <div>
             <TextField 
                 required 

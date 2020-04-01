@@ -6,9 +6,6 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import EventDisplayer from './EventDisplayer';
-import EventCreater from './EventCreater';
-import EventJoiner from './EventJoiner';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -47,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function LayoutTabs() {
+export default function LayoutTabs(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -59,19 +56,15 @@ export default function LayoutTabs() {
     <div className={classes.root}>
       <AppBar position="static">
         <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-          <Tab label="Find Events" {...a11yProps(0)} />
-          <Tab label="Create An Event" {...a11yProps(1)} />
-          <Tab label="Join An Event" {...a11yProps(2)} />
+          <Tab label={props.tab1Label} {...a11yProps(0)} />
+          <Tab label={props.tab2Label} {...a11yProps(1)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <EventDisplayer />
+        {props.tab1Content}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <EventCreater />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        <EventJoiner />
+        {props.tab2Content}
       </TabPanel>
     </div>
   );

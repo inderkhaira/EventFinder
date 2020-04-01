@@ -7,7 +7,6 @@ import './EventCreater.css';
 
 class EventCreater extends Component {
     state = {
-        organizerID: null,
         title: null,
         location: null,
         types: [],
@@ -38,7 +37,7 @@ class EventCreater extends Component {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                organizerID: this.state.organizerID,
+                organizerID: this.props.userID,
                 title: this.state.title,
                 location: this.state.location,
                 types: this.state.types,
@@ -49,7 +48,6 @@ class EventCreater extends Component {
             .then(res => this.handleResponse(res))
             .then(_ => this.setState(
                 { 
-                    organizerID: null,
                     title: null,
                     location: null,
                     types: [],
@@ -58,12 +56,12 @@ class EventCreater extends Component {
                     description: null,
                     loading: false
                 }))
+            .then(_ => alert("Event created successfully!"))
             .catch(err => this.handleError(err));
     }
 
     getCreateDisabled = () => 
-        (this.state.organizerID == null ||
-            this.state.title == null || 
+        (this.state.title == null || 
             this.state.location == null || 
             this.state.startDate == null || 
             this.state.endDate == null);
@@ -74,13 +72,11 @@ class EventCreater extends Component {
     createForm = () => 
         <div>
             <EventCreateForm 
-                organizerIDValue={this.state.organizerID}
                 titleValue={this.state.title}
                 locationValue={this.state.location}
                 startDateValue={this.state.startDate}
                 endDateValue={this.state.endDate}
                 descriptionValue={this.state.description}
-                onOrganizerIDChange={value => this.setState({organizerID: parseInt(value)})}
                 onTitleChange={value => this.setState({title: value})}
                 onLocationChange={value => this.setState({location: value})}
                 onTypesChange={value => this.setState({types: value})}

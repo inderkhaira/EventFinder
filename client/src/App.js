@@ -1,50 +1,55 @@
 import React, { Component } from 'react';
 import LayoutTabs from './LayoutTabs';
+import SignInPage from './SignInPage';
+import SignUpPage from './SignUpPage';
+import EventDisplayer from './EventDisplayer';
+import EventCreater from './EventCreater';
 
 import './App.css';
 
 class App extends Component {
   state = {
-    response: '',
-    post: '',
-    responseToPost: '',
+    userID: null
   };
   
-  componentDidMount() {
-    this.callApi()
-      .then(res => this.setState({ response: res.express }))
-      .catch(err => console.log(err));
-  }
+  eventDisplayer = () =>
+    <EventDisplayer userID={this.state.userID} />
   
-  callApi = async () => {
-    const response = await fetch('/api/hello');
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    
-    return body;
-  };
+  eventCreater =() =>
+    <EventCreater userID={this.state.userID} />
+
+  signUpPage =() =>
+    <SignUpPage />
   
-  handleSubmit = async e => {
-    e.preventDefault();
-    const response = await fetch('/api/world', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ post: this.state.post }),
-    });
-    const body = await response.text();
-    
-    this.setState({ responseToPost: body });
-  };
-  
-render() {
-    return (
-      <div className="App">
-        <LayoutTabs />
-      </div>
-    );
-  }
+  signInPage = () => 
+    <SignInPage 
+      onSignIn={value => this.setState({userID: value})}
+    />
+
+  userLayoutTabs = () => 
+    <LayoutTabs 
+      tab1Label="Sign In" 
+      tab1Content={this.signInPage()}
+      tab2Label="Sign Up"
+      tab2Content={this.signUpPage()} />
+
+      
+  eventLayoutTabs = () => 
+    <LayoutTabs 
+      tab1Label="Find Events" 
+      tab1Content={this.eventDisplayer()}
+      tab2Label="Create An Event"
+      tab2Content={this.eventCreater()} />
+
+  render() {
+      return (
+        <div className="App">
+          {this.state.userID == null ?
+            this.userLayoutTabs() :
+            this.eventLayoutTabs() }
+        </div>
+      );
+    }
 }
 
 export default App;

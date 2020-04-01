@@ -7,16 +7,6 @@ const port = process.env.PORT || 5000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/api/hello', (req, res) => {
-  res.send({ express: 'Hello From Express' });
-});
-
-app.post('/api/world', (req, res) => {
-  console.log(req.body);
-  res.send(
-    `I received your POST request. This is what you sent me: ${req.body.post}`,
-  );
-});
 
 app.post('/api/events', (req, res) => {
   console.log(req.body);
@@ -53,6 +43,22 @@ app.post('/api/events', (req, res) => {
 app.post('/api/event', (req, res) => {
   console.log(req.body);
   res.send();
+})
+
+app.delete('/api/event/:eventID', (req, res) => {
+  console.log(req.params.eventID);
+  res.send();
+})
+
+app.put('/api/event/:eventID/user/:userID', (req, res) => {
+  console.log(req.params.eventID);
+  console.log(req.params.userID);
+  res.send();
+})
+
+app.post('/api/user', (req, res) => {
+  console.log(req.body);
+  res.send({ userID: 0 });
 })
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

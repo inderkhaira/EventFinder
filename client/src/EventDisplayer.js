@@ -8,7 +8,9 @@ import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import MultiSelectTypeGroup from './MultiSelectTypeGroup';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 import './EventDisplayer.css';
 
@@ -28,13 +30,13 @@ class EventDisplayer extends Component {
     handleResponse = res => {
         if (res.status !== 200) 
             throw Error(res.json().message);
-        return res.json();
+        return res;
     }
     
     handleError = err => {
         console.log(err);
-        alert("Failed to create event. Please try again");
-        this.setState({loading: false})
+        alert("Operation failed. Please try again");
+        this.setState({ events: [], loading: false })
     }
 
     updateEvents = async () => {
@@ -53,7 +55,7 @@ class EventDisplayer extends Component {
                 startDate: this.state.startDate,
                 endDate: this.state.endDate,
             })})
-            .then(res => this.handleResponse(res))
+            .then(res => this.handleResponse(res).json())
             .then(body => this.setState(
                 { 
                     events: body, 
@@ -66,6 +68,48 @@ class EventDisplayer extends Component {
                     loading: false
                 }))
             .catch(err => this.handleError(err));
+    }
+
+    deleteEvent = async eventID => {
+        this.setState({ loading: true});
+        fetch(`/api/event/${eventID}`, {
+            method: 'DELETE'
+        })
+        .then(res => this.handleResponse(res))
+        .then(_ => this.setState(
+            { 
+                events: [], 
+                location: null,
+                title: null,
+                organizerName: null,
+                types: [],
+                startDate: null,
+                endDate: null,
+                loading: false
+            }))
+        .then(_ => alert("Event deleted successfully."))
+        .catch(err => this.handleError(err));
+    }
+
+    joinEvent = async eventID => {
+        this.setState({ loading: true});
+        fetch(`/api/event/${eventID}/user/${this.props.userID}`, {
+            method: 'PUT'
+        })
+        .then(res => this.handleResponse(res))
+        .then(_ => this.setState(
+            { 
+                events: [], 
+                location: null,
+                title: null,
+                organizerName: null,
+                types: [],
+                startDate: null,
+                endDate: null,
+                loading: false
+            }))
+        .then(_ => alert("Event joined successfully."))
+        .catch(err => this.handleError(err));
     }
 
     handleTitle = e => this.setState({title: e.target.value })
@@ -81,6 +125,10 @@ class EventDisplayer extends Component {
     handleEndDate = e => this.setState({endDate: e.target.value })
     
     loadingIcon = () => <CircularProgress />
+
+    handleDelete = _ => console.log("Delete")
+    
+    handleJoin = _ => console.log("Join")
 
     render() {
         return(
@@ -129,16 +177,14 @@ class EventDisplayer extends Component {
                         }}
                     />
                     <br />
-                    <div>
-                        <Button 
-                            className="EventDisplayer-Input"
-                            color="primary" 
-                            variant="contained"
-                            onClick={this.updateEvents}
-                        >
-                            Search
-                        </Button>
-                    </div>
+                    <Button 
+                        className="EventDisplayer-Input"
+                        color="primary" 
+                        variant="contained"
+                        onClick={this.updateEvents}
+                    >
+                        Search
+                    </Button>
                 </Container>
                 <br />
                 <Container>
@@ -151,9 +197,19 @@ class EventDisplayer extends Component {
                                 <CardHeader
                                     title={event.Title}
                                     action={
-                                        <Button>
-                                            <DeleteForeverIcon />
-                                        </Button>
+                                        <ButtonGroup color="primary" aria-label="outlined primary button group">
+                                            <Button 
+                                                onClick={_ => this.joinEvent(event.EventID)} 
+                                            >
+                                                <AddCircleIcon />
+                                            </Button>
+                                            <Button 
+                                                onClick={_ => this.deleteEvent(event.EventID)}
+                                                disabled={event.OrganizerUserID !== this.props.userID}
+                                            >
+                                                <DeleteForeverIcon />
+                                            </Button>
+                                        </ButtonGroup>
                                     }
                                 />
                                 <CardContent>
