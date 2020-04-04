@@ -136,14 +136,12 @@ class EventDisplayer extends Component {
                 <Container>
                     <h1> Filters </h1>
                     <br />
-                    <div>
-                        <TextField 
-                            className="EventDisplayer-Input"
-                            label="Title" 
-                            variant="outlined" 
-                            onChange={this.handleTitle}
-                        /> 
-                    </div>
+                    <TextField 
+                        className="EventDisplayer-Input"
+                        label="Title" 
+                        variant="outlined" 
+                        onChange={this.handleTitle}
+                    /> 
                     <TextField 
                         className="EventDisplayer-Input"
                         label="Location" 
@@ -152,7 +150,7 @@ class EventDisplayer extends Component {
                     /> 
                     <TextField 
                         className="EventDisplayer-Input"
-                        label="OrganizerName" 
+                        label="Organizer Name" 
                         variant="outlined" 
                         onChange={this.handleOrganizerName} 
                     /> 
